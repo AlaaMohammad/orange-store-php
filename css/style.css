@@ -1,0 +1,45 @@
+
+.item-box {
+    border: 0.2vh solid #aaa;
+    background: #fff;
+    box-shadow: 0 0 20px rgb(0 0 0 / 10%);
+    z-index: 1;
+}
+
+.item-box .product-item {
+    padding: 1.55vh 1.55vh 2vh;
+}
+.item-box .product-item .out-of-stock-label {
+    width: 6.3vh;
+    height: 6.3vh;
+    background-size: 6.3vh;
+}
+.product-grid .item-box .product-item .out-of-stock-label {
+    z-index: 1;
+    position: absolute;
+    left: 1vh;
+    top: 1vh;
+    width: 6.1vh;
+    height: 6.1vh;
+    background: url(https://eshop.orange.jo/Themes/Eshop2021/Content/images/new-label.svg) no-repeat center center;
+    background-size: 6.1vh;
+}
+.item-box .picture {
+    margin: 0 10px;
+    z-index: 1;
+    overflow: hidden;
+    background-color: #fff;
+}
+.item-box .picture a img {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    max-width: 100%;
+    max-height: 100%;
+    margin: auto;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    -webkit-transform: translateZ(0) scale(1, 1);
+}
