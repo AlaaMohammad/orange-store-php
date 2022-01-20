@@ -1,5 +1,17 @@
 <?php
-session_start();
+require('database.php');
+if($_SERVER['REQUEST_METHOD'] == 'POST'){
+    $name = $_POST['name'];
+    $brand = $_POST['brand'];
+    $sql = "INSERT INTO products (product_name,brand) VALUES (?,?)";
+    $insert = $conn->prepare($sql);
+    $result = $insert ->execute([$name,$brand]);
+    if($result){
+        echo 'successfully';
+    }else{
+       echo 'faild';
+    }
+}
 ?>
 <!doctype html>
 <html lang="en">
@@ -8,6 +20,19 @@ session_start();
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.jsdelivr.net" rel="preconnect" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/boosted@5.1.3/dist/css/boosted.min.css" rel="stylesheet" integrity="sha384-Di/KMIVcO9Z2MJO3EsrZebWTNrgJTrzEDwAplhM5XnCFQ1aDhRNWrp6CWvVcn00c" crossorigin="anonymous">
+    <link rel="stylesheet" href="../../css/style.css">
     <title>Orange Jordan - Eshop </title>
 </head>
 <body>
@@ -81,28 +106,26 @@ session_start();
 </html>
 </body>
 </html>
-<script>
+<?php
 
-    function validateForm(){
-        let name = document.getElementById('name');
-        if(name.value == ""){
-            let errors = 'You have to enter your name';
-            document.getElementById('error').innerHTML = errors;
+if($_SERVER["REQUEST_METHOD"] == 'POST'){
+   $_SESSION['phones'][]= [
+       'name' => $_POST['name'],
+       'brand' => $_POST['brand']
+   ];
+  var_dump($_SESSION['phones'] );
+}
+?>
+<script>
+    function validateForm() {
+        let name = document.getElementById( "name" );
+        if( name.value == "" )
+        {
+            let error = " You Have To Write Your Name. ";
+            document.getElementById( "error" ).innerHTML = error;
             return false;
         }else{
             return true;
         }
     }
 </script>
-<?php
-if($_SERVER['REQUEST_METHOD'] == 'POST'){
-    $_SESSION['phones'][] = [
-        'name' => $_POST['name'],
-        'brand' => $_POST['brand']
-    ];
-}
-
-
-print_r($_SESSION['phones']);
-
-?>

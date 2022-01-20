@@ -1,5 +1,31 @@
 <?php
-session_start();
+require('../../config/database.php');
+$product_id = $_GET['id'];
+if($_SERVER['REQUEST_METHOD'] == 'GET' ||$_SERVER['REQUEST_METHOD'] == 'POST'){
+
+$sql = "SELECT * FROM products WHERE id=$product_id";
+$stmt =  $conn->query($sql);
+$result  = $stmt->fetch(PDO::FETCH_ASSOC);
+var_dump($result);
+if($result){
+    echo 'successfully';
+}else{
+    echo 'faild';
+}}
+
+if($_SERVER['REQUEST_METHOD'] == 'POST'){
+    $name = $_POST['name'];
+    $brand = $_POST['brand'];
+    $sql = "UPDATE products SET product_name = '$name', brand = '$brand' WHERE id=$product_id";
+    //var_dump($sql);
+    $insert = $conn->prepare($sql);
+    $result = $insert ->execute();
+    if($result){
+        echo 'successfully';
+    }else{
+        echo 'faild';
+    }
+}
 ?>
 <!doctype html>
 <html lang="en">
@@ -8,6 +34,19 @@ session_start();
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.jsdelivr.net" rel="preconnect" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/boosted@5.1.3/dist/css/boosted.min.css" rel="stylesheet" integrity="sha384-Di/KMIVcO9Z2MJO3EsrZebWTNrgJTrzEDwAplhM5XnCFQ1aDhRNWrp6CWvVcn00c" crossorigin="anonymous">
+    <link rel="stylesheet" href="../../css/style.css">
     <title>Orange Jordan - Eshop </title>
 </head>
 <body>
@@ -60,11 +99,11 @@ session_start();
                     <form method="POST" onsubmit="return validateForm()">
                         <div class="form-group">
                             <label for="name">Mobile Name</label>
-                            <input name="name" type="text" class="form-control" id="name" aria-describedby="emailHelp">
+                            <input name="name" type="text" class="form-control" id="name" value="<?php echo $result['product_name'] ?>" aria-describedby="emailHelp">
                         </div>
                         <div class="form-group">
                             <label for="brand">Brand</label>
-                            <input type="text" class="form-control" id="brand" name="brand">
+                            <input type="text" class="form-control" id="brand" name="brand" value="<?php echo $result['brand'] ?>">
                         </div>
 
                         <button type="submit" class="btn btn-primary">Submit</button>
@@ -81,28 +120,26 @@ session_start();
 </html>
 </body>
 </html>
-<script>
+<?php
 
-    function validateForm(){
-        let name = document.getElementById('name');
-        if(name.value == ""){
-            let errors = 'You have to enter your name';
-            document.getElementById('error').innerHTML = errors;
+if($_SERVER["REQUEST_METHOD"] == 'POST'){
+    $_SESSION['phones'][]= [
+        'name' => $_POST['name'],
+        'brand' => $_POST['brand']
+    ];
+    var_dump($_SESSION['phones'] );
+}
+?>
+<script>
+    function validateForm() {
+        let name = document.getElementById( "name" );
+        if( name.value == "" )
+        {
+            let error = " You Have To Write Your Name. ";
+            document.getElementById( "error" ).innerHTML = error;
             return false;
         }else{
             return true;
         }
     }
 </script>
-<?php
-if($_SERVER['REQUEST_METHOD'] == 'POST'){
-    $_SESSION['phones'][] = [
-        'name' => $_POST['name'],
-        'brand' => $_POST['brand']
-    ];
-}
-
-
-print_r($_SESSION['phones']);
-
-?>
